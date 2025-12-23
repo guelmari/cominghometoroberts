@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <!-- Block search engines -->
+  <meta name="robots" content="noindex, nofollow">
+  
+  <!-- Basic Meta -->
+  <title>Coming Home to Roberts Street</title>
+  <meta name="description" content="The Lopa Family Tree">
+  
+  <!-- Open Graph (Social Sharing) -->
+  <meta property="og:title" content="Coming Home to Roberts Street">
+  <meta property="og:description" content="The Lopa Family Tree">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cominghometoroberts.com">
+  <meta property="og:image" content="https://cominghometoroberts.com/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Coming Home to Roberts Street">
+  <meta name="twitter:description" content="The Lopa Family Tree">
+  <meta name="twitter:image" content="https://cominghometoroberts.com/og-image.jpg">
+  
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  <!-- iOS Web App -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Lopa Family">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { 
+      height: 100%; 
+      width: 100%; 
+      overflow: hidden; 
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+    }
+    iframe { width: 100%; height: 100%; border: none; display: block; }
+    
+    .login-screen {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #4a5d4a 0%, #3d4f3d 50%, #2d3d2d 100%);
+      color: white;
+      padding: 1.5rem;
+    }
+    
+    .login-box {
+      background: white;
+      padding: 2.5rem 2rem;
+      border-radius: 1.25rem;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4);
+      text-align: center;
+      max-width: 360px;
+      width: 100%;
+    }
+    
+    .login-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.25rem;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .login-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .login-box h1 { 
+      color: #1e293b; 
+      margin-bottom: 0.25rem; 
+      font-size: 1.375rem; 
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    
+    .login-box .subtitle {
+      color: #4a5d4a;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 1.75rem;
+    }
+    
+    .login-box input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 0.625rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    
+    .login-box input:focus { 
+      outline: none; 
+      border-color: #4a5d4a; 
+    }
+    
+    .login-box input::placeholder {
+      color: #94a3b8;
+    }
+    
+    .login-box button {
+      width: 100%;
+      padding: 0.875rem;
+      background: #4a5d4a;
+      color: white;
+      border: none;
+      border-radius: 0.625rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      -webkit-appearance: none;
+    }
+    
+    .login-box button:hover { 
+      background: #3d4f3d; 
+    }
+    
+    .login-box button:active {
+      background: #2d3d2d;
+    }
+    
+    .error { 
+      color: #dc2626; 
+      font-size: 0.875rem; 
+      margin-top: 1rem;
+      padding: 0.5rem;
+      background: #fef2f2;
+      border-radius: 0.5rem;
+    }
+    
+    .hidden { display: none !important; }
+    
+    /* Ensure iframe fills screen on iOS */
+    @supports (-webkit-touch-callout: none) {
+      .login-screen, iframe {
+        height: -webkit-fill-available;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login" class="login-screen">
+    <div class="login-box">
+      <div class="login-logo">
+        <img src="/favicon.png" alt="Lopa Family Crest">
+      </div>
+      <h1>Coming Home to Roberts Street</h1>
+      <p class="subtitle">The Lopa Family Tree</p>
+      <input type="password" id="password" placeholder="Enter family password" autofocus autocomplete="off">
+      <button onclick="checkPassword()">Enter</button>
+      <p id="error" class="error hidden">Incorrect password. Please try again.</p>
+    </div>
+  </div>
+
+  <!-- App (hidden until authenticated) -->
+  <iframe 
+    id="app"
+    class="hidden"
+    src="about:blank"
+    data-src="https://abmo-family-tree.web.app/?family=the-lopa-family-tree"
+    allow="fullscreen"
+    loading="eager"
+  ></iframe>
+
+  <script>
+    // SHA-256 hash of the password
+    const PASSWORD_HASH = '98c70aafea38fab6e762b95bf3e62d1028e4ac59ba5040fd80e4fbad9e3a70a7';
+
+    async function sha256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function checkPassword() {
+      const input = document.getElementById('password').value;
+      const hash = await sha256(input);
+      
+      if (hash === PASSWORD_HASH) {
+        document.getElementById('login').classList.add('hidden');
+        const iframe = document.getElementById('app');
+        iframe.src = iframe.dataset.src;
+        iframe.classList.remove('hidden');
+        sessionStorage.setItem('lopa_auth', 'true');
+      } else {
+        document.getElementById('error').classList.remove('hidden');
+        document.getElementById('password').value = '';
+        document.getElementById('password').focus();
+      }
+    }
+
+    // Allow Enter key to submit
+    document.getElementById('password').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    // Hide error when typing
+    document.getElementById('password').addEventListener('input', () => {
+      document.getElementById('error').classList.add('hidden');
+    });
+
+    // Check if already authenticated this session
+    if (sessionStorage.getItem('lopa_auth') === 'true') {
+      document.getElementById('login').classList.add('hidden');
+      const iframe = document.getElementById('app');
+      iframe.src = iframe.dataset.src;
+      iframe.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
