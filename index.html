@@ -186,6 +186,12 @@
     // SHA-256 hash of the password
     const PASSWORD_HASH = '98c70aafea38fab6e762b95bf3e62d1028e4ac59ba5040fd80e4fbad9e3a70a7';
 
+    // Helper to load iframe with cache-busting timestamp
+    function loadApp(iframe) {
+      iframe.src = iframe.dataset.src + '&_t=' + Date.now();
+      iframe.classList.remove('hidden');
+    }
+
     async function sha256(message) {
       const msgBuffer = new TextEncoder().encode(message);
       const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -199,9 +205,7 @@
       
       if (hash === PASSWORD_HASH) {
         document.getElementById('login').classList.add('hidden');
-        const iframe = document.getElementById('app');
-        iframe.src = iframe.dataset.src;
-        iframe.classList.remove('hidden');
+        loadApp(document.getElementById('app'));
         sessionStorage.setItem('lopa_auth', 'true');
       } else {
         document.getElementById('error').classList.remove('hidden');
@@ -223,9 +227,7 @@
     // Check if already authenticated this session
     if (sessionStorage.getItem('lopa_auth') === 'true') {
       document.getElementById('login').classList.add('hidden');
-      const iframe = document.getElementById('app');
-      iframe.src = iframe.dataset.src;
-      iframe.classList.remove('hidden');
+      loadApp(document.getElementById('app'));
     }
   </script>
 </body>
